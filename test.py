@@ -83,6 +83,13 @@ def fire_bullet(x,y):
     bullet_state = 'fire'
     screen.blit(bulletimg,(x+5,y+16))
 
+
+def Collusion(aX,aY,bX,bY):
+    distance = math.sqrt(math.pow((aX-bX),2)+math.pow((aY-bY),2))
+    if distance <= 25:
+        return True
+    else:
+        return False
 #게임 루프
 while True:
     screen.fill((0,0,0))
@@ -121,7 +128,36 @@ while True:
     
     if bulletY <= 0:
         bullet_state = "ready"
-        bulletY = 480    
+        bulletY = 480
+
+    #Enemy 이동 & 충돌
+    
+    for i in range(0,6):
+        if enemyY[i]>=480:
+            for j in range(0,6):
+                enemyY[j]= 2000
+            display_gameover()
+            break
+            
+        enemyX[i] += enemyX_change[i] 
+        if enemyX[i] <= 0:
+            enemyX_change[i] = 2
+            enemyY[i] += enemyY_change[i]
+        elif enemyX[i] >= 750:
+            enemyX_change[i] = -2
+            enemyY[i] += enemyY_change[0]
+        
+        colide = Collusion(enemyX[i],enemyY[i],bulletX,bulletY)
+        
+        enemy(enemyX[i],enemyY[i],i)
+    
+        if colide:
+            bullet_state = "ready"
+            bulletY = 480
+            enemyX[i] = random.randint(0,755)
+            enemyY[i]= random.randint(50,200)
+            score_value +=1
+              
 
     display_font(textX,textY)
     player(playerX,playerY)       
