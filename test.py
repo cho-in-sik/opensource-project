@@ -45,4 +45,48 @@ playerX_change = 0
 
 def player(x,y):
     screen.blit(playerimg,(x,y))
+
+#Enemy
+enemyimg = []
+enemyimgT =  []    
+enemyX  = []
+enemyY  = []
+enemyX_change  = []
+enemyY_change  = []
+
+
+#몹생성
+for i in range(0,6):
+    enemyimg.append(pygame.image.load("alien.png"))
+    enemyimgT.append(pygame.transform.scale(enemyimg[i], (45, 45)))
+    enemyX.append(random.randint(0,755))
+    enemyY.append(random.randint(50,200))
+    enemyX_change.append(4)
+    enemyY_change.append(45)
+
+def enemy(x,y,i):
+    screen.blit(enemyimgT[i],(x,y))
     
+
+#Bullet
+bulletimg = pygame.image.load("bullet.png")
+bulletimg = pygame.transform.scale(bulletimg, (35, 35))
+
+bulletX = 0
+bulletY = 480
+bulletX_change = 0
+bulletY_change = 10
+bullet_state = "ready"
+
+def fire_bullet(x,y):
+    global bullet_state
+    bullet_state = 'fire'
+    screen.blit(bulletimg,(x+5,y+16))
+
+#게임 루프
+while True:
+    screen.fill((0,0,0))
+    screen.blit(background,(0,0))
+    display_font(textX,textY)
+    player(playerX,playerY)       
+    pygame.display.update()
