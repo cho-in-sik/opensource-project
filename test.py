@@ -87,6 +87,42 @@ def fire_bullet(x,y):
 while True:
     screen.fill((0,0,0))
     screen.blit(background,(0,0))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.display.quit()
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                playerX_change = -5
+            
+            if event.key == pygame.K_RIGHT:
+                playerX_change = 5
+            
+            if event.key == pygame.K_SPACE:
+                if bullet_state is "ready":
+                    bulletX = playerX
+                    fire_bullet(bulletX,bulletY)
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                playerX_change = 0
+
+    #Player 움직임과 경계설정
+    if playerX <= 0:
+        playerX = 0
+    elif playerX >= 750:
+        playerX = 750
+        
+    playerX += playerX_change
+    
+    #탄환 움직임
+    if bullet_state is "fire":
+        fire_bullet(bulletX,bulletY)
+        bulletY -= bulletY_change
+    
+    if bulletY <= 0:
+        bullet_state = "ready"
+        bulletY = 480    
+
     display_font(textX,textY)
     player(playerX,playerY)       
     pygame.display.update()
