@@ -1,6 +1,8 @@
 import pygame
+from pygame import mixer
 import random
 import math
+import mediapipe as mp
 
 #게임 시작
 pygame.init()
@@ -34,6 +36,10 @@ def display_gameover():
 
 #배경
 background = pygame.image.load("background.png")
+
+#bgm
+mixer.music.load("bgm.mp3")
+mixer.music.play(-1)
 
 #Plyaer
 playerimg = pygame.image.load("space-invaders.png")
@@ -69,7 +75,7 @@ def enemy(x,y,i):
     
 
 #Bullet
-bulletimg = pygame.image.load("bullet.png")
+bulletimg = pygame.image.load("new_bullet.png")
 bulletimg = pygame.transform.scale(bulletimg, (35, 35))
 
 bulletX = 0
@@ -82,7 +88,8 @@ def fire_bullet(x,y):
     global bullet_state
     bullet_state = 'fire'
     screen.blit(bulletimg,(x+5,y+16))
-
+    mixer.music.load("fire.ogg")
+    mixer.music.play()
 #게임 루프
 while True:
     screen.fill((0,0,0))
