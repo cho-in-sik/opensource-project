@@ -75,7 +75,7 @@ def enemy(x,y,i):
     
 
 #Bullet
-bulletimg = pygame.image.load("/Users/choi/Desktop/clone/new_bullet.png")
+bulletimg = pygame.image.load("new_bullet.png")
 bulletimg = pygame.transform.scale(bulletimg, (35, 35))
 
 bulletX = 0
