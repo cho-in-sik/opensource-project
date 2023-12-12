@@ -21,6 +21,9 @@ mp_drawing = mp.solutions.drawing_utils
 #손 감지 모듈
 mp_hands = mp.solutions.hands
 
+
+
+
 # 캠 키기
 cap = cv2.VideoCapture(0)
 
@@ -46,7 +49,20 @@ def display_font(x,y):
 def display_gameover():
     over = game_over.render("Game Over",True,(255,255,255))
     screen.blit(over,(250,280))
-    
+
+#게임 재시작
+def restart_game():
+    global playerX, playerY, playerX_change, bullet_state, bulletY, score_value
+    playerX = 350
+    playerY = 500
+    playerX_change = 0
+    bullet_state = "ready"
+    bulletY = 480
+    score_value = 0
+    for i in range(0, 6):
+        enemyX[i] = random.randint(0, 755)
+        enemyY[i] = random.randint(50, 200)
+
 
 #배경
 background = pygame.image.load("background.png")
@@ -115,6 +131,8 @@ def Collusion(aX,aY,bX,bY):
 
 # 적의 움직임을 제어하기 위한 타이머나 프레임 기반 변수
 enemy_move_timer = pygame.time.get_ticks() 
+
+
 with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                     min_tracking_confidence = 0.5) as hands:
     while cap.isOpened():
@@ -190,14 +208,20 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = '<--'
                 playerX_change = -10
 
+            if( finger_1 and finger_2 and finger_3 and finger_4 and finger_5):
+                gesture_text = 'Restart'
+                restart_game()
+                
+
+
             # 주먹쥐면 "발사"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
                 and (not finger_5)):
-                gesture_text = '발사'
+                gesture_text = 'shooting'
                 if bullet_state is "ready":
                         bulletX = playerX
                         fire_bullet(bulletX,bulletY)
-
+            
            
             
             # 캠 화면에 손가락을 그림
@@ -222,6 +246,9 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 pygame.display.quit()
                 
             if event.type == pygame.KEYDOWN:
+                #q 누르면 종료
+                if event.key ==pygame.K_Q:
+                    pygame.display.quit()
                 if event.key == pygame.K_LEFT:
                     playerX_change = -10
                 
@@ -240,7 +267,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                     
         #적움직임
         current_time = pygame.time.get_ticks()
-        if current_time - enemy_move_timer > 2000:  # 1000밀리초(1초)마다 적을 움직이도록 설정 (필요에 따라 조절)
+        if current_time - enemy_move_timer > 1000:  # 1000밀리초(1초)마다 적을 움직이도록 설정 (필요에 따라 조절)
             enemy_move_timer = current_time  # 타이머 초기화
 
             for i in range(0, 3):
@@ -269,7 +296,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         
         for i in range(0,6):
             if enemyY[i]>=480:
-                for j in range(0,3):
+                for j in range(0,6):
                     enemyY[j]= 2000
                 display_gameover()
                 break
@@ -295,9 +322,13 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 mixer.music.load("explosion.ogg")
                 mixer.music.play()
 
+
+        
         display_font(textX,textY)
         player(playerX,playerY)       
         pygame.display.update()
+
+    
 
    
     
