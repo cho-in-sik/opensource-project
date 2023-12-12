@@ -36,11 +36,28 @@ game_over = pygame.font.Font('freesansbold.ttf',65)
 #프레임
 clock = pygame.time.Clock()
 
+#highScore.txt 파일 생성
+def create_highscore_file():
+    with open("highScore.txt", "w") as file:
+        file.write("0")
+
 #점수 표시
 def display_font(x,y):
     score = font.render("Score:" + str(score_value),True,(255,255,255))
     screen.blit(score,(x,y))
 
+#최고점수 업데이트
+def update_highscore(score):
+    try:
+        with open("highScore.txt", "r") as file:
+            current_highscore = int(file.read())
+    except FileNotFoundError:   #예외처리1
+        create_highscore_file()
+        current_highscore = 0
+
+    if score > current_highscore:
+        with open("highScore.txt", "w") as file:
+            file.write(str(score))
 
 #게임오버 표시
 def display_gameover():
@@ -283,6 +300,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 mixer.music.load("explosion.ogg")
                 mixer.music.play()
 
+        update_highscore(score_value)
         display_font(textX,textY)
         player(playerX,playerY)       
         pygame.display.update()
