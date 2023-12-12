@@ -36,6 +36,8 @@ textY = 20
 
 game_over = pygame.font.Font('freesansbold.ttf',65)
 
+
+
 #프레임
 clock = pygame.time.Clock()
 
@@ -105,14 +107,20 @@ def enemy(x,y,i):
     
 
 #Bullet
-bulletimg = pygame.image.load("new_bullet.png")
-bulletimg = pygame.transform.scale(bulletimg, (35, 35))
+
+
+bulletimg = pygame.image.load("bullet.png")
+bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
 bulletY_change = 10
 bullet_state = "ready"
+
+
+
+
 
 def fire_bullet(x,y):
     global bullet_state
@@ -208,9 +216,11 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = '<--'
                 playerX_change = -10
 
+            #전부 펴져있으면 리스타트
             if( finger_1 and finger_2 and finger_3 and finger_4 and finger_5):
                 gesture_text = 'Restart'
                 restart_game()
+            
                 
 
 
@@ -247,7 +257,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 
             if event.type == pygame.KEYDOWN:
                 #q 누르면 종료
-                if event.key ==pygame.K_Q:
+                if event.key ==pygame.K_q:
                     pygame.display.quit()
                 if event.key == pygame.K_LEFT:
                     playerX_change = -10
@@ -267,7 +277,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                     
         #적움직임
         current_time = pygame.time.get_ticks()
-        if current_time - enemy_move_timer > 1000:  # 1000밀리초(1초)마다 적을 움직이도록 설정 (필요에 따라 조절)
+        if current_time - enemy_move_timer > 2000:  # 1000밀리초(1초)마다 적을 움직이도록 설정 (필요에 따라 조절)
             enemy_move_timer = current_time  # 타이머 초기화
 
             for i in range(0, 3):
@@ -291,6 +301,11 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         if bulletY <= 0:
             bullet_state = "ready"
             bulletY = 480
+        # 스코어가 3 이상이면 총알 이미지를 바꿈
+        if score_value >= 3:
+            # 새로운 총알 이미지 로드
+            bulletimg = pygame.image.load("new_bullet.png")
+            bulletimg = pygame.transform.scale(bulletimg, (35, 35))
         
         #Enemy 이동
         
