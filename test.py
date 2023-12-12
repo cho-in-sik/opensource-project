@@ -6,7 +6,7 @@ import math
 import cv2
 import mediapipe as mp
 
-#게임 시작
+#게임 시작 
 pygame.init()
 
 #화면 세팅
@@ -178,9 +178,33 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = 'stop'
                 playerX_change = 0
             
-           
-            
+            # 약지 -> 오른쪽
+            elif(finger_5):
+                gesture_text = '-->'
+                playerX_change = 10
 
+            # 검지 -> 왼쪽
+            elif(finger_2):
+                gesture_text = '<--'
+                playerX_change = -10
+
+            # 주먹쥐면 "발사"
+            elif( (not finger_2) and (not finger_3) and (not finger_4)
+                and (not finger_5)):
+                gesture_text = '발사'
+                if bullet_state is "ready":
+                        bulletX = playerX
+                        fire_bullet(bulletX,bulletY)
+            
+            # 캠 화면에 손가락을 그림
+            mp_drawing.draw_landmarks(
+                image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+            
+        # 캠화면에 텍스트를 작성
+        cv2.putText( image, text=' {}'.format(gesture_text)
+                     , org=(10,30), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                 fontScale=1,color=(0,0,255), thickness=2)   
+            
         #캠 화면 ( 이미지 )을 화면에 띄움
         cv2.imshow('image', image)
 
@@ -257,6 +281,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 enemyX[i] = random.randint(0,755)
                 enemyY[i]= random.randint(50,200)
                 score_value +=1
+                mixer.music.load("explosion.ogg")
+                mixer.music.play()
 
         display_font(textX,textY)
         player(playerX,playerY)       
