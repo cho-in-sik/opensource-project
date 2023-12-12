@@ -188,10 +188,10 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = '<--'
                 playerX_change = -10
 
-            # 주먹쥐면 "발사"
+            # 주먹쥐면 "fire"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
                 and (not finger_5)):
-                gesture_text = '발사'
+                gesture_text = 'fire'
                 if bullet_state is "ready":
                         bulletX = playerX
                         fire_bullet(bulletX,bulletY)
@@ -255,7 +255,6 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             bulletY = 480
         
         #Enemy 이동
-        
         for i in range(0,3):
             if enemyY[i]>=480:
                 for j in range(0,3):
