@@ -281,6 +281,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 enemyX[i] = random.randint(0,755)
                 enemyY[i]= random.randint(50,200)
                 score_value +=1
+                mixer.music.load("explosion.ogg")
+                mixer.music.play()
 
         display_font(textX,textY)
         player(playerX,playerY)       
