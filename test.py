@@ -98,7 +98,7 @@ for i in range(0,6):
     enemyimgT.append(pygame.transform.scale(enemyimg[i], (45, 45)))
     enemyX.append(random.randint(0,755))
     enemyY.append(random.randint(50,200))
-    enemyX_change.append(4)
+    enemyX_change.append(6)
     enemyY_change.append(45)
 
 def enemy(x,y,i):
@@ -112,7 +112,7 @@ bulletimg = pygame.transform.scale(bulletimg, (35, 35))
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 10
+bulletY_change = 15
 bullet_state = "ready"
 
 def fire_bullet(x,y):
@@ -198,12 +198,12 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             # 약지 -> 오른쪽
             elif(finger_5):
                 gesture_text = '-->'
-                playerX_change = 10
+                playerX_change = 15
 
             # 검지 -> 왼쪽
             elif(finger_2):
                 gesture_text = '<--'
-                playerX_change = -10
+                playerX_change = -15
 
             # 주먹쥐면 "fire"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
@@ -272,19 +272,19 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             bulletY = 480
         
         #Enemy 이동
-        for i in range(0,3):
+        for i in range(0,6):
             if enemyY[i]>=480:
                 for j in range(0,3):
                     enemyY[j]= 2000
                 display_gameover()
                 break
                 
-            enemyX[i] += enemyX_change[i] 
+            enemyX[i] += enemyX_change[i]
             if enemyX[i] <= 0:
-                enemyX_change[i] = 4
+                enemyX_change[i] = 6
                 enemyY[i] += enemyY_change[i]
             elif enemyX[i] >= 750:
-                enemyX_change[i] = -4
+                enemyX_change[i] = -6
                 enemyY[i] += enemyY_change[0]
             
             colide = Collusion(enemyX[i],enemyY[i],bulletX,bulletY)
