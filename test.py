@@ -112,7 +112,9 @@ def Collusion(aX,aY,bX,bY):
         return True
     else:
         return False
-    
+
+# 적의 움직임을 제어하기 위한 타이머나 프레임 기반 변수
+enemy_move_timer = pygame.time.get_ticks() 
 with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                     min_tracking_confidence = 0.5) as hands:
     while cap.isOpened():
@@ -195,6 +197,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 if bullet_state is "ready":
                         bulletX = playerX
                         fire_bullet(bulletX,bulletY)
+
+           
             
             # 캠 화면에 손가락을 그림
             mp_drawing.draw_landmarks(
@@ -234,8 +238,15 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     playerX_change = 0
                     
-        
+        #적움직임
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy_move_timer > 2000:  # 1000밀리초(1초)마다 적을 움직이도록 설정 (필요에 따라 조절)
+            enemy_move_timer = current_time  # 타이머 초기화
 
+            for i in range(0, 3):
+                enemyY[i] += enemyY_change[i]
+
+                
 
         #Player 이동
         if playerX <= 0:
@@ -256,7 +267,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         
         #Enemy 이동
         
-        for i in range(0,3):
+        for i in range(0,6):
             if enemyY[i]>=480:
                 for j in range(0,3):
                     enemyY[j]= 2000
