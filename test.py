@@ -28,8 +28,8 @@ cap = cv2.VideoCapture(0)
 score_value = 0
 font = pygame.font.Font('freesansbold.ttf',45)
 
-textX = 300
-textY = 20
+textX = 50
+textY = 60
 
 game_over = pygame.font.Font('freesansbold.ttf',65)
 
@@ -63,7 +63,24 @@ def update_highscore(score):
 def display_gameover():
     over = game_over.render("Game Over",True,(255,255,255))
     screen.blit(over,(250,280))
-    
+
+#최고점수 표시
+def display_highscore():
+    try:
+        with open("highScore.txt", "r") as file:
+            highscore = int(file.read())  # highScore.txt 파일에서 점수 읽기
+    except FileNotFoundError:
+        pass
+    else:
+        # 폰트 및 색상 설정
+        score_font = pygame.font.Font('freesansbold.ttf', 45)
+        score_color = (255, 255, 255)
+
+        # 화면에 표시될 텍스트 렌더링
+        highscore_text = score_font.render("HighScore: " + str(highscore), True, score_color)
+        
+        # 화면에 텍스트 표시
+        screen.blit(highscore_text, (50, 10))
 
 #배경
 background = pygame.image.load("background.png")
@@ -288,7 +305,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 enemyY[i] += enemyY_change[0]
             
             colide = Collusion(enemyX[i],enemyY[i],bulletX,bulletY)
-            
+            display_highscore()
             enemy(enemyX[i],enemyY[i],i)
         
             if colide:
