@@ -68,7 +68,7 @@ def display_gameover():
     over = game_over.render("Game Over",True,(255,255,255))
     screen.blit(over,(250,280))
 
-<<<<<<< HEAD
+
 #최고점수 표시
 def display_highscore():
     try:
@@ -86,7 +86,7 @@ def display_highscore():
         
         # 화면에 텍스트 표시
         screen.blit(highscore_text, (50, 10))
-=======
+
 #게임 재시작
 def restart_game():
     global playerX, playerY, playerX_change, bullet_state, bulletY, score_value
@@ -100,7 +100,6 @@ def restart_game():
         enemyX[i] = random.randint(0, 755)
         enemyY[i] = random.randint(50, 200)
 
->>>>>>> main
 
 #배경
 background = pygame.image.load("background.png")
@@ -265,8 +264,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = '<--'
                 playerX_change = -15
 
-<<<<<<< HEAD
-=======
+
+
             
 
             #전부 펴져있으면 리스타트
@@ -275,15 +274,12 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 restart_game()
 
         
->>>>>>> main
             # 주먹쥐면 "fire"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
                 and (not finger_5)):
                 gesture_text = 'fire'
-<<<<<<< HEAD
-=======
+
                 gesture_text = 'shooting'
->>>>>>> main
                 if bullet_state is "ready":
                         bulletX = playerX
                         fire_bullet(bulletX,bulletY)
@@ -382,12 +378,9 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 enemyY[i] += enemyY_change[0]
             
             colide = Collusion(enemyX[i],enemyY[i],bulletX,bulletY)
-<<<<<<< HEAD
             display_highscore()
-=======
             
-            
->>>>>>> main
+        
             enemy(enemyX[i],enemyY[i],i)
         
             if colide:
@@ -399,12 +392,10 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 mixer.music.load("explosion.ogg")
                 mixer.music.play()
 
-<<<<<<< HEAD
+
         update_highscore(score_value)
-=======
 
         
->>>>>>> main
         display_font(textX,textY)
         player(playerX,playerY)       
         pygame.display.update()
