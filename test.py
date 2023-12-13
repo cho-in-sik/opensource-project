@@ -112,8 +112,7 @@ def enemy(x,y,i):
 bulletimg = pygame.image.load("bullet.png")
 bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 
-pillsalimg = pygame.image.load("newpillsalgi.png")
-pillsalimg = pygame.transform.scale(pillsalimg, (100, 200))
+
 
 bulletX = 0
 bulletY = 480
@@ -165,11 +164,17 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         # 이미지 순서가 RGB여야 Mediapipe 사용가능
         image = cv2.cvtColor(cv2.flip(image, 1), cv2.COLOR_BGR2RGB)
 
+        # 필요에 따라 성능 향상을 위해 이미지 작성을 불가능함으로 기본 설정합니다.
+        image.flags.writeable = False
+
         # Image에서 손을 추적하고 결과를 result에 저장
         result = hands.process(image)
 
         # 이미지 값 순서를 RGB에서 BGR로 다시 바꿈
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+        
+        
 
         #캠 화면에 띄울 텍스트 정의 ( 기본 값 )
         gesture_text = 'Cant found hand'
@@ -270,8 +275,6 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 if event.key == pygame.K_LEFT:
                     playerX_change = -10
 
-                
-                
                 if event.key == pygame.K_RIGHT:
                     playerX_change = 10
                 
