@@ -2,7 +2,6 @@ import pygame
 from pygame import mixer
 import random
 import math
-
 import cv2
 import mediapipe as mp
 
