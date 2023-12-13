@@ -113,7 +113,7 @@ bulletimg = pygame.image.load("bullet.png")
 bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 
 pillsalimg = pygame.image.load("newpillsalgi.png")
-pillsalimg = pygame.transform.scale(pillsalimg, (25, 85))
+pillsalimg = pygame.transform.scale(pillsalimg, (100, 200))
 
 bulletX = 0
 bulletY = 480
@@ -140,10 +140,7 @@ def Collusion(aX,aY,bX,bY):
     else:
         return False
     
-def pillsalgi(x,y):
-    global bullet_state
-    bullet_state="fire"
-    screen.blit(pillsalimg,(x+10,y+20))
+
 
 
 # 적의 움직임을 제어하기 위한 타이머나 프레임 기반 변수
@@ -189,6 +186,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             finger_3 = False
             finger_4 = False
             finger_5 = False
+            
 
             #4번 마디가 2번 마디 보다 y값이 작으면 finger_1를 참
             if(hand_landmarks.landmark[4].y < hand_landmarks.landmark[2].y):
@@ -210,6 +208,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             if(hand_landmarks.landmark[20].y < hand_landmarks.landmark[18].y):
                 finger_5 = True
 
+            
             # 검지, 중지, 약지 펴져있으면 STOP
             if(finger_2 and finger_3 and finger_4):
                 gesture_text = 'stop'
@@ -225,14 +224,14 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = '<--'
                 playerX_change = -10
 
+            
+
             #전부 펴져있으면 리스타트
             if( finger_1 and finger_2 and finger_3 and finger_4 and finger_5):
                 gesture_text = 'Restart'
                 restart_game()
-            
-                
 
-
+        
             # 주먹쥐면 "발사"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
                 and (not finger_5)):
@@ -270,6 +269,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                     pygame.display.quit()
                 if event.key == pygame.K_LEFT:
                     playerX_change = -10
+
+                
                 
                 if event.key == pygame.K_RIGHT:
                     playerX_change = 10
@@ -278,6 +279,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                     if bullet_state is "ready":
                         bulletX = playerX
                         fire_bullet(bulletX,bulletY)
+               
 
                     
             if event.type == pygame.KEYUP:
@@ -289,10 +291,11 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         if current_time - enemy_move_timer > 2000:  # 1000밀리초(1초)마다 적을 움직이도록 설정 (필요에 따라 조절)
             enemy_move_timer = current_time  # 타이머 초기화
 
-            for i in range(0, 3):
+            for i in range(0, 6):
                 enemyY[i] += enemyY_change[i]
 
                 
+      
 
         #Player 이동
         if playerX <= 0:
@@ -306,9 +309,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         if bullet_state is "fire":
             fire_bullet(bulletX,bulletY)
             bulletY -= bulletY_change
-        # if bullet_state is "pillsal":
-        #     pillsalgi(bulletX,bulletY)
-        #     bulletY -= bulletY_change
+        
         if bulletY <= 0:
             bullet_state = "ready"
             bulletY = 480
@@ -336,6 +337,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 enemyY[i] += enemyY_change[0]
             
             colide = Collusion(enemyX[i],enemyY[i],bulletX,bulletY)
+            
             
             enemy(enemyX[i],enemyY[i],i)
         
