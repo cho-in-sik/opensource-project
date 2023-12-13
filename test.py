@@ -2,7 +2,6 @@ import pygame
 from pygame import mixer
 import random
 import math
-
 import cv2
 import mediapipe as mp
 
@@ -31,8 +30,8 @@ cap = cv2.VideoCapture(0)
 score_value = 0
 font = pygame.font.Font('freesansbold.ttf',45)
 
-textX = 300
-textY = 20
+textX = 50
+textY = 60
 
 game_over = pygame.font.Font('freesansbold.ttf',65)
 
@@ -41,17 +40,53 @@ game_over = pygame.font.Font('freesansbold.ttf',65)
 #프레임
 clock = pygame.time.Clock()
 
+#highScore.txt 파일 생성
+def create_highscore_file():
+    with open("highScore.txt", "w") as file:
+        file.write("0")
+
 #점수 표시
 def display_font(x,y):
     score = font.render("Score:" + str(score_value),True,(255,255,255))
     screen.blit(score,(x,y))
 
+#최고점수 업데이트
+def update_highscore(score):
+    try:
+        with open("highScore.txt", "r") as file:
+            current_highscore = int(file.read())
+    except FileNotFoundError:   #예외처리1
+        create_highscore_file()
+        current_highscore = 0
+
+    if score > current_highscore:
+        with open("highScore.txt", "w") as file:
+            file.write(str(score))
 
 #게임오버 표시
 def display_gameover():
     over = game_over.render("Game Over",True,(255,255,255))
     screen.blit(over,(250,280))
 
+<<<<<<< HEAD
+#최고점수 표시
+def display_highscore():
+    try:
+        with open("highScore.txt", "r") as file:
+            highscore = int(file.read())  # highScore.txt 파일에서 점수 읽기
+    except FileNotFoundError:
+        pass
+    else:
+        # 폰트 및 색상 설정
+        score_font = pygame.font.Font('freesansbold.ttf', 45)
+        score_color = (255, 255, 255)
+
+        # 화면에 표시될 텍스트 렌더링
+        highscore_text = score_font.render("HighScore: " + str(highscore), True, score_color)
+        
+        # 화면에 텍스트 표시
+        screen.blit(highscore_text, (50, 10))
+=======
 #게임 재시작
 def restart_game():
     global playerX, playerY, playerX_change, bullet_state, bulletY, score_value
@@ -65,6 +100,7 @@ def restart_game():
         enemyX[i] = random.randint(0, 755)
         enemyY[i] = random.randint(50, 200)
 
+>>>>>>> main
 
 #배경
 background = pygame.image.load("background.png")
@@ -99,7 +135,7 @@ for i in range(0,6):
     enemyimgT.append(pygame.transform.scale(enemyimg[i], (45, 45)))
     enemyX.append(random.randint(0,755))
     enemyY.append(random.randint(50,200))
-    enemyX_change.append(4)
+    enemyX_change.append(6)
     enemyY_change.append(45)
 
 def enemy(x,y,i):
@@ -117,7 +153,7 @@ bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
-bulletY_change = 10
+bulletY_change = 15
 bullet_state = "ready"
 
 
@@ -222,13 +258,15 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             # 약지 -> 오른쪽
             elif(finger_5):
                 gesture_text = '-->'
-                playerX_change = 10
+                playerX_change = 15
 
             # 검지 -> 왼쪽
             elif(finger_2):
                 gesture_text = '<--'
-                playerX_change = -10
+                playerX_change = -15
 
+<<<<<<< HEAD
+=======
             
 
             #전부 펴져있으면 리스타트
@@ -237,11 +275,15 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 restart_game()
 
         
+>>>>>>> main
             # 주먹쥐면 "fire"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
                 and (not finger_5)):
                 gesture_text = 'fire'
+<<<<<<< HEAD
+=======
                 gesture_text = 'shooting'
+>>>>>>> main
                 if bullet_state is "ready":
                         bulletX = playerX
                         fire_bullet(bulletX,bulletY)
@@ -331,17 +373,21 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 display_gameover()
                 break
                 
-            enemyX[i] += enemyX_change[i] 
+            enemyX[i] += enemyX_change[i]
             if enemyX[i] <= 0:
-                enemyX_change[i] = 4
+                enemyX_change[i] = 6
                 enemyY[i] += enemyY_change[i]
             elif enemyX[i] >= 750:
-                enemyX_change[i] = -4
+                enemyX_change[i] = -6
                 enemyY[i] += enemyY_change[0]
             
             colide = Collusion(enemyX[i],enemyY[i],bulletX,bulletY)
+<<<<<<< HEAD
+            display_highscore()
+=======
             
             
+>>>>>>> main
             enemy(enemyX[i],enemyY[i],i)
         
             if colide:
@@ -353,8 +399,12 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 mixer.music.load("explosion.ogg")
                 mixer.music.play()
 
+<<<<<<< HEAD
+        update_highscore(score_value)
+=======
 
         
+>>>>>>> main
         display_font(textX,textY)
         player(playerX,playerY)       
         pygame.display.update()
