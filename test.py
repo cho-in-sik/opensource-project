@@ -112,6 +112,9 @@ def enemy(x,y,i):
 bulletimg = pygame.image.load("bullet.png")
 bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 
+pillsalimg = pygame.image.load("newpillsalgi.png")
+pillsalimg = pygame.transform.scale(pillsalimg, (25, 85))
+
 bulletX = 0
 bulletY = 480
 bulletX_change = 0
@@ -136,6 +139,12 @@ def Collusion(aX,aY,bX,bY):
         return True
     else:
         return False
+    
+def pillsalgi(x,y):
+    global bullet_state
+    bullet_state="fire"
+    screen.blit(pillsalimg,(x+10,y+20))
+
 
 # 적의 움직임을 제어하기 위한 타이머나 프레임 기반 변수
 enemy_move_timer = pygame.time.get_ticks() 
@@ -297,7 +306,9 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         if bullet_state is "fire":
             fire_bullet(bulletX,bulletY)
             bulletY -= bulletY_change
-        
+        # if bullet_state is "pillsal":
+        #     pillsalgi(bulletX,bulletY)
+        #     bulletY -= bulletY_change
         if bulletY <= 0:
             bullet_state = "ready"
             bulletY = 480
