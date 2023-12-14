@@ -180,7 +180,15 @@ bulletX_change = 0
 bulletY_change = 15
 bullet_state = "ready"
 
+#pillsalgi
+pillsalimg = pygame.image.load("newpillsalgi.png")
+pillsalimg = pygame.transform.scale(pillsalimg, (200, 300))
 
+# 필살기 상태 초기화
+pillsalgi_state = "ready"
+pillsalgiX = 0
+pillsalgiY = 0
+pillsalgiY_change = 20
 
 
 
@@ -194,8 +202,10 @@ def fire_bullet(x,y):
 
 def Collusion(aX,aY,bX,bY):
     distance = math.sqrt(math.pow((aX-bX),2)+math.pow((aY-bY),2))
+   
     if distance <= 25:
         return True
+    
     else:
         return False
     
@@ -296,6 +306,12 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 gesture_text = 'Restart'
                 restart_game()
 
+            if finger_4 and pillsalgi_state =="ready":
+                gesture_text = "pillsalgi"
+                pillsalgi_state = "fire"
+                pillsalgiX = playerX
+                pillsalgiY = playerY
+
         
             # 주먹쥐면 "fire"
             elif( (not finger_2) and (not finger_3) and (not finger_4)
@@ -379,6 +395,17 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             bulletimg = pygame.image.load("bullet.png")
             bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 
+
+        # 필살기 이동
+        if pillsalgi_state is "fire":
+            screen.blit(pillsalimg, (pillsalgiX, pillsalgiY))
+            pillsalgiY -= pillsalgiY_change
+
+            # 필살기가 화면을 벗어나면 상태를 "ready"로 설정
+            if pillsalgiY < 0:
+                pillsalgi_state = "ready"
+                pillsalgiY = 0
+
         #Enemy 이동
         for i in range(0,6):
             if enemyY[i]>=480:
@@ -410,7 +437,18 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 mixer.music.load("explosion.ogg")
                 mixer.music.play()
             
-            
+        # 필살기와 몬스터의 충돌 검사
+        for i in range(0, 6):
+            colide_pillsalgi = Collusion(enemyX[i], enemyY[i], pillsalgiX, pillsalgiY)
+
+            if colide_pillsalgi:
+                pillsalgi_state = "ready"
+                pillsalgiY = 0
+                enemyX[i] = random.randint(0, 755)
+                enemyY[i] = random.randint(50, 200)
+                score_value += 1
+                mixer.music.load("explosion.ogg")
+                mixer.music.play()
 
         update_highscore(score_value)
 
