@@ -96,6 +96,7 @@ def restart_game():
     bullet_state = "ready"
     bulletY = 480
     score_value = 0
+    
     for i in range(0, 6):
         enemyX[i] = random.randint(0, 755)
         enemyY[i] = random.randint(50, 200)
@@ -349,7 +350,11 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             # 새로운 총알 이미지 로드
             bulletimg = pygame.image.load("new_bullet.png")
             bulletimg = pygame.transform.scale(bulletimg, (35, 35))
-        
+        #초기화했을때 기본총알로 재변경
+        if score_value == 0:
+            bulletimg = pygame.image.load("bullet.png")
+            bulletimg = pygame.transform.scale(bulletimg, (25, 25))
+
         #Enemy 이동
         for i in range(0,6):
             if enemyY[i]>=480:
