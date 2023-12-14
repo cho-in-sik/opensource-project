@@ -83,7 +83,7 @@ def update_highscore(score):
             out_img = ImageDraw.Draw(target_img)
             out_img.text(xy=(15,15), text=title_text, fill=(237, 230, 211), font=titlefontObj)  #저장된 프레임에 최고기록 갱신 시간을 text로 그리기"
 
-            target_img.save("/Users/choi/Desktop/clone/please.jpg")
+            target_img.save("please.jpg")
             
             file.write(str(score))
 
