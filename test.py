@@ -74,13 +74,14 @@ def update_highscore(score):
             cv2.imwrite("record breaker.jpg", image)  #openCV imwrite메서드로 최고기록 갱신 시의 프레임 저장 후 jpg파일 생성
             target_img = Image.open("record breaker.jpg")   #target_img 지정
 
+            #프레임 위에 그릴 Text지정 (datetime 모듈 활용)
             title_text ="최고 기록 " \
                         + str(datetime.today().strftime("%Y/%m/%d %H:%M:%S"))\
                         + " 에 갱신"
 
 
             out_img = ImageDraw.Draw(target_img)
-            out_img.text(xy=(15,15), text=title_text, fill=(237, 230, 211), font=titlefontObj)
+            out_img.text(xy=(15,15), text=title_text, fill=(237, 230, 211), font=titlefontObj)  #저장된 프레임에 최고기록 갱신 시간을 text로 그리기"
 
             target_img.save("/Users/choi/Desktop/clone/please.jpg")
             
