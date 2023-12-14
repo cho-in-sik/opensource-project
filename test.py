@@ -61,6 +61,7 @@ def update_highscore(score):
 
     if score > current_highscore:
         with open("highScore.txt", "w") as file:
+            cv2.imwrite("record breaker.jpg", image)  #openCV imwrite메서드로 최고기록 갱신 시의 프레임 저장 후 jpg파일 생성
             file.write(str(score))
 
 #게임오버 표시
