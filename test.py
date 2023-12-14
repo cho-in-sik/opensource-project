@@ -4,6 +4,9 @@ import random
 import math
 import cv2
 import mediapipe as mp
+from PIL import Image, ImageFont, ImageDraw
+from datetime import datetime
+
 
 #게임 시작 
 pygame.init()
@@ -50,6 +53,13 @@ def display_font(x,y):
     score = font.render("Score:" + str(score_value),True,(255,255,255))
     screen.blit(score,(x,y))
 
+#폰트 로드
+def loadfont(fontsize=50):
+	ttf = 'NotoSansKR-VariableFont_wght.ttf'
+	return ImageFont.truetype(font=ttf, size=fontsize)
+
+titlefontObj = loadfont(fontsize=60)
+
 #최고점수 업데이트
 def update_highscore(score):
     try:
@@ -62,6 +72,18 @@ def update_highscore(score):
     if score > current_highscore:
         with open("highScore.txt", "w") as file:
             cv2.imwrite("record breaker.jpg", image)  #openCV imwrite메서드로 최고기록 갱신 시의 프레임 저장 후 jpg파일 생성
+            target_img = Image.open("record breaker.jpg")   #target_img 지정
+
+            title_text ="최고 기록 " \
+                        + str(datetime.today().strftime("%Y/%m/%d %H:%M:%S"))\
+                        + " 에 갱신"
+
+
+            out_img = ImageDraw.Draw(target_img)
+            out_img.text(xy=(15,15), text=title_text, fill=(237, 230, 211), font=titlefontObj)
+
+            target_img.save("/Users/choi/Desktop/clone/please.jpg")
+            
             file.write(str(score))
 
 #게임오버 표시
@@ -374,7 +396,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 score_value +=1
                 mixer.music.load("explosion.ogg")
                 mixer.music.play()
-
+            
+            
 
         update_highscore(score_value)
 
