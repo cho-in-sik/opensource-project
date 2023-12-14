@@ -39,7 +39,6 @@ textY = 60
 game_over = pygame.font.Font('freesansbold.ttf',65)
 
 
-
 #프레임
 clock = pygame.time.Clock()
 
@@ -59,6 +58,8 @@ def loadfont(fontsize=50):
 	return ImageFont.truetype(font=ttf, size=fontsize)
 
 titlefontObj = loadfont(fontsize=60)
+
+
 
 #최고점수 업데이트
 def update_highscore(score):
@@ -182,7 +183,7 @@ bullet_state = "ready"
 
 #pillsalgi
 pillsalimg = pygame.image.load("newpillsalgi.png")
-pillsalimg = pygame.transform.scale(pillsalimg, (200, 300))
+pillsalimg = pygame.transform.scale(pillsalimg, (100, 200))
 
 # 필살기 상태 초기화
 pillsalgi_state = "ready"
@@ -282,20 +283,18 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 finger_5 = True
 
             
-            # 검지, 중지, 약지 펴져있으면 STOP
-            if(finger_2 and finger_3 and finger_4):
-                gesture_text = 'stop'
-                playerX_change = 0
             
+            
+            
+
+            # 검지 -> 왼쪽
+            if(finger_2):
+                gesture_text = '<--'
+                playerX_change = -15
             # 약지 -> 오른쪽
             elif(finger_5):
                 gesture_text = '-->'
                 playerX_change = 15
-
-            # 검지 -> 왼쪽
-            elif(finger_2):
-                gesture_text = '<--'
-                playerX_change = -15
 
 
 
@@ -305,12 +304,19 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             if( finger_1 and finger_2 and finger_3 and finger_4 and finger_5):
                 gesture_text = 'Restart'
                 restart_game()
+                
+            # 검지, 중지, 약지 펴져있으면 STOP
+            elif(finger_2 and finger_3 and finger_4):
+                gesture_text = 'stop'
+                playerX_change = 0
+                
 
-            if finger_4 and pillsalgi_state =="ready":
+            elif finger_4 and pillsalgi_state =="ready":
                 gesture_text = "pillsalgi"
                 pillsalgi_state = "fire"
                 pillsalgiX = playerX
                 pillsalgiY = playerY
+                
 
         
             # 주먹쥐면 "fire"
@@ -395,7 +401,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             bulletimg = pygame.image.load("bullet.png")
             bulletimg = pygame.transform.scale(bulletimg, (25, 25))
 
-
+       
         # 필살기 이동
         if pillsalgi_state is "fire":
             screen.blit(pillsalimg, (pillsalgiX, pillsalgiY))
@@ -405,13 +411,15 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             if pillsalgiY < 0:
                 pillsalgi_state = "ready"
                 pillsalgiY = 0
-
+        
+      
         #Enemy 이동
         for i in range(0,6):
             if enemyY[i]>=480:
                 for j in range(0,6):
                     enemyY[j]= 2000
                 display_gameover()
+               
                 break
                 
             enemyX[i] += enemyX_change[i]
@@ -452,7 +460,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
 
         update_highscore(score_value)
 
-        
+     
         display_font(textX,textY)
         player(playerX,playerY)       
         pygame.display.update()
