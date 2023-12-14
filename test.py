@@ -173,6 +173,7 @@ def Collusion(aX,aY,bX,bY):
         return True
     else:
         return False
+    
 
 
 with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
@@ -324,10 +325,8 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     playerX_change = 0
-            for i in range(0, 6):
-                enemyY[i] += enemyY_change[i]
 
-            
+      
 
         #Player 이동
         if playerX <= 0:
