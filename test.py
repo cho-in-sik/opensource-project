@@ -282,19 +282,6 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
             if(hand_landmarks.landmark[20].y < hand_landmarks.landmark[18].y):
                 finger_5 = True
 
-            
-            
-            
-            
-
-            # 검지 -> 왼쪽
-            if(finger_2):
-                gesture_text = '<--'
-                playerX_change = -15
-            # 약지 -> 오른쪽
-            elif(finger_5):
-                gesture_text = '-->'
-                playerX_change = 15
 
 
 
@@ -316,6 +303,14 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
                 pillsalgi_state = "fire"
                 pillsalgiX = playerX
                 pillsalgiY = playerY
+             # 검지 -> 왼쪽
+            elif(finger_2):
+                gesture_text = '<--'
+                playerX_change = -15
+            # 약지 -> 오른쪽
+            elif(finger_5):
+                gesture_text = '-->'
+                playerX_change = 15
                 
 
         
