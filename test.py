@@ -15,7 +15,7 @@ pygame.init()
 screen = pygame.display.set_mode((800,600))
 
 #제목
-pygame.display.set_caption("Space Invaders")
+pygame.display.set_caption("Play")
 
 #그리기 도구 지원해주는 서브 패키지
 mp_drawing = mp.solutions.drawing_utils
@@ -246,7 +246,7 @@ with mp_hands.Hands(max_num_hands = 1, min_detection_confidence =0.5,
         
 
         #캠 화면에 띄울 텍스트 정의 ( 기본 값 )
-        gesture_text = 'Cant found hand'
+        gesture_text = ''
 
         # 결과 result가 제대로 추적이 되었을때 
         if result.multi_hand_landmarks:
